@@ -28,4 +28,4 @@ jobs:
         with:
           go-version: 1.21
       - name: Build
-        run: go build -o wifire ./cmd
+        run: go build -o gofire ./cmd
