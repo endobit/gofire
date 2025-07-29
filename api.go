@@ -1,4 +1,4 @@
-package wifire
+package gofire
 
 import (
 	"encoding/json"
@@ -33,7 +33,7 @@ const (
 	StatusOffline SystemStatus = 99 // offline
 )
 
-// GetUserDataResponse is the wifire UserData.
+// GetUserDataResponse is the WiFire UserData.
 type GetUserDataResponse struct {
 	Cognito        string  `json:"cognito"`
 	CustomerID     string  `json:"customerId"`

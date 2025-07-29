@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"endobit.io/wifire"
+	"endobit.io/gofire"
 )
 
 type Event struct {
@@ -34,10 +34,10 @@ func newPlotCmd() *cobra.Command {
 			}
 			defer fin.Close()
 
-			var temps []wifire.Status
+			var temps []gofire.Status
 
 			for s := bufio.NewScanner(fin); s.Scan(); { // log isn't json, but each line is
-				var status wifire.Status
+				var status gofire.Status
 
 				if err := json.Unmarshal(s.Bytes(), &status); err != nil {
 					return err
@@ -46,7 +46,7 @@ func newPlotCmd() *cobra.Command {
 				temps = append(temps, status)
 			}
 
-			var markers []wifire.Marker
+			var markers []gofire.Marker
 
 			if events != "" {
 				fin, err := os.Open(events)
@@ -62,14 +62,14 @@ func newPlotCmd() *cobra.Command {
 				}
 
 				for _, e := range events {
-					markers = append(markers, wifire.Marker{
+					markers = append(markers, gofire.Marker{
 						Time:  e.Time,
 						Label: e.Event,
 					})
 				}
 			}
 
-			p := wifire.NewPlotter(&wifire.PlotterOptions{
+			p := gofire.NewPlotter(&gofire.PlotterOptions{
 				Title:   temps[0].Time.Format(time.ANSIC),
 				Data:    temps,
 				Markers: markers,
@@ -85,7 +85,7 @@ func newPlotCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVarP(&input, "input", "i", "", "input file")
-	cmd.Flags().StringVarP(&output, "output", "o", "wifire.png", "output file")
+	cmd.Flags().StringVarP(&output, "output", "o", "gofire.png", "output file")
 	cmd.Flags().StringVar(&events, "events", "", "events file")
 
 	if err := cmd.MarkFlagRequired("input"); err != nil {

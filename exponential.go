@@ -1,4 +1,4 @@
-package wifire
+package gofire
 
 import (
 	"math"

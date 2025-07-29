@@ -1,7 +1,7 @@
-// Package wifire implements a client for connecting to the Traeger REST and
+// Package gofire implements a client for connecting to the Traeger REST and
 // MQTT APIs. The goal is to support temperature monitoring with a potential
 // longterm goal of controlling the grill.
-package wifire
+package gofire
 
 import (
 	"bytes"

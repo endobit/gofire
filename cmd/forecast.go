@@ -9,8 +9,8 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"endobit.io/gofire"
 	"endobit.io/table"
-	"endobit.io/wifire"
 )
 
 func newForecastCmd() *cobra.Command { //nolint:gocognit
@@ -44,11 +44,11 @@ validate the accuracy of the predictions against the actual completion time.`,
 			}
 
 			// Read all entries first
-			var entries []wifire.Status
+			var entries []gofire.Status
 
 			scanner := bufio.NewScanner(fin)
 			for scanner.Scan() {
-				var status wifire.Status
+				var status gofire.Status
 
 				if err := json.Unmarshal(scanner.Bytes(), &status); err != nil {
 					continue // Skip invalid entries
@@ -75,7 +75,7 @@ validate the accuracy of the predictions against the actual completion time.`,
 			fmt.Println()
 
 			// Initialize exponential predictor
-			ep := wifire.NewExponentialPredictor() //nolint:varnamelen
+			ep := gofire.NewExponentialPredictor() //nolint:varnamelen
 
 			type row struct {
 				Time   string

@@ -1,4 +1,4 @@
-module endobit.io/wifire
+module endobit.io/gofire
 
 go 1.24.5
 

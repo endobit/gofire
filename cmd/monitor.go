@@ -8,19 +8,19 @@ import (
 	"time"
 
 	"endobit.io/app/log"
-	"endobit.io/wifire"
+	"endobit.io/gofire"
 )
 
 type monitor struct {
 	Logger  *slog.Logger
-	Grill   *wifire.Client
+	Grill   *gofire.Client
 	Output  io.Writer
-	History []wifire.Status
+	History []gofire.Status
 }
 
 func (m *monitor) Run(ctx context.Context, grillName string) error { //nolint:gocognit
 	// Initialize exponential predictor for probe temperature prediction
-	exponentialPredictor := wifire.NewExponentialPredictor()
+	exponentialPredictor := gofire.NewExponentialPredictor()
 
 	// Initialize predictor with historical data if available
 	if len(m.History) > 0 {
@@ -44,7 +44,7 @@ func (m *monitor) Run(ctx context.Context, grillName string) error { //nolint:go
 			"uncertainty", uncertainty)
 	}
 
-	subscription := make(chan wifire.Status, 1)
+	subscription := make(chan gofire.Status, 1)
 
 	var ticker *time.Ticker
 
@@ -143,7 +143,7 @@ func (m *monitor) Run(ctx context.Context, grillName string) error { //nolint:go
 				}
 
 				if bestETA > 0 {
-					msg.ProbeETA = wifire.JSONDuration(bestETA)
+					msg.ProbeETA = gofire.JSONDuration(bestETA)
 					attrs = append(attrs,
 						slog.Duration("probe_eta", bestETA.Round(time.Minute)),
 						slog.String("eta_source", etaSource))
@@ -181,7 +181,7 @@ func (m *monitor) Run(ctx context.Context, grillName string) error { //nolint:go
 }
 
 // calculateProbeETA estimates time to reach target probe temperature using multiple factors
-func (m *monitor) calculateProbeETA(current *wifire.Status) time.Duration {
+func (m *monitor) calculateProbeETA(current *gofire.Status) time.Duration {
 	if len(m.History) < 1 {
 		return 0
 	}
@@ -315,7 +315,7 @@ func (m *monitor) calculateProbeETA(current *wifire.Status) time.Duration {
 	// Apply all adjustments
 	adjustedRate := rate * grillTempAdjustment * differentialAdjustment * stageAdjustment * stabilityAdjustment
 
-	// Debug logging for adjustment factors (only if wifire debug logging is enabled)
+	// Debug logging for adjustment factors (only if gofire debug logging is enabled)
 	m.Logger.Debug("eta",
 		log.Format("%.4f", "base_rate", baseRate),
 		log.Format("%.4f", "recent_rate", recentRate),

@@ -1,22 +1,22 @@
-[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/endobit/wifire/build.yaml?branch=main)](https://github.com/endobit/wifire/actions?query=workflow%3Abuild)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/endobit/wifire)](https://img.shields.io/github/go-mod/go-version/endobit/wifire)
-[![Go Report Card](https://goreportcard.com/badge/github.com/endobit/wifire)](https://goreportcard.com/report/endobit.io/wifire)
-[![Go Reference](https://pkg.go.dev/badge/github.com/endobit/wifire.svg)](https://pkg.go.dev/endobit.io/wifire)
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/endobit/gofire/build.yaml?branch=main)](https://github.com/endobit/gofire/actions?query=workflow%3Abuild)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/endobit/gofire)](https://img.shields.io/github/go-mod/go-version/endobit/gofire)
+[![Go Report Card](https://goreportcard.com/badge/github.com/endobit/gofire)](https://goreportcard.com/report/endobit.io/gofire)
+[![Go Reference](https://pkg.go.dev/badge/github.com/endobit/gofire.svg)](https://pkg.go.dev/endobit.io/gofire)
 
-# WiFire
+# Gofire
 
-Temperature monitoring for Traeger grills. For use as a library or standalone
-command.
+Temperature monitoring for Traeger Wifire grills. For use as a library or
+standalone command.
 
 ## building
 
 From the root of the project type `make` to bootstrap the build environment,
 this will create a `.builder` directory with a bunch of makefiles. Type `make`
-again for help. Use the `build` target to build the `wifire` cli.
+again for help. Use the `build` target to build the `gofire` cli.
 
 ## cli
 
-The `wifire` command requires both `--username` and `--password` flags, use the
+The `gofire` command requires both `--username` and `--password` flags, use the
 same credentials used for the Traeger mobile app. With no other options the
 command will start logging to the terminal received temperature updates from
 your grill. For example:
@@ -29,12 +29,12 @@ your grill. For example:
 
 Use the `--output` flag to also log JSON to a file.
 
-Run `wifire` with no arguments to see the help and usage.
+Run `gofire` with no arguments to see the help and usage.
 
 ### plot
 
-After a session of logging with the `--output` flag run `wifire plot` and use
+After a session of logging with the `--output` flag run `gofire plot` and use
 the `--input` flag to specify a JSON log file. The result is a file called
-`wifire.png` the will look the following:
+`gofire.png` the will look the following:
 
 ![sample plot](sample.png)

@@ -16,7 +16,7 @@ import (
 
 	"endobit.io/app"
 	"endobit.io/app/log"
-	"endobit.io/wifire"
+	"endobit.io/gofire"
 )
 
 type Config struct {
@@ -33,7 +33,7 @@ func newRootCmd() *cobra.Command { //nolint:gocognit
 	)
 
 	cmd := cobra.Command{
-		Use:     "wifire",
+		Use:     "gofire",
 		Short:   "Traeger WiFire Grill Util",
 		Version: version,
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
@@ -99,7 +99,7 @@ func newRootCmd() *cobra.Command { //nolint:gocognit
 			logger.Info("found", "grill", thing.FriendlyName, "model", thing.GrillModel.Name)
 
 			// Load historical data from file on startup for better ETA stability
-			history := []wifire.Status{}
+			history := []gofire.Status{}
 			if output != "" {
 				loadedHistory, err := loadHistoricalData(output, 20)
 				if err != nil {
@@ -171,7 +171,7 @@ func newRootCmd() *cobra.Command { //nolint:gocognit
 
 var grillRegexp = regexp.MustCompile(`^\[([^\]]+)\]\s+(.+)$`)
 
-func connectToGrill(username, password string, logger *slog.Logger) (*wifire.Client, error) {
+func connectToGrill(username, password string, logger *slog.Logger) (*gofire.Client, error) {
 	// When messages look like "[component] message", split out the component
 	// and do a little bit of structured logging.
 	filter := func(msg string) (string, []slog.Attr) {
@@ -195,9 +195,9 @@ func connectToGrill(username, password string, logger *slog.Logger) (*wifire.Cli
 	mqtt.WARN = legacy(slog.LevelWarn)
 	mqtt.DEBUG = legacy(slog.LevelDebug)
 
-	client, err := wifire.NewClient( // basic auth into cognito
-		wifire.WithLogger(logger),
-		wifire.Credentials(username, password))
+	client, err := gofire.NewClient( // basic auth into cognito
+		gofire.WithLogger(logger),
+		gofire.Credentials(username, password))
 	if err != nil {
 		return nil, err
 	}
@@ -206,7 +206,7 @@ func connectToGrill(username, password string, logger *slog.Logger) (*wifire.Cli
 }
 
 // loadHistoricalData reads existing JSON data from the output file to initialize history
-func loadHistoricalData(filename string, maxEntries int) ([]wifire.Status, error) {
+func loadHistoricalData(filename string, maxEntries int) ([]gofire.Status, error) {
 	if filename == "" {
 		return nil, nil
 	}
@@ -222,7 +222,7 @@ func loadHistoricalData(filename string, maxEntries int) ([]wifire.Status, error
 	}
 	defer file.Close()
 
-	var history []wifire.Status
+	var history []gofire.Status
 
 	scanner := bufio.NewScanner(file)
 
@@ -243,7 +243,7 @@ func loadHistoricalData(filename string, maxEntries int) ([]wifire.Status, error
 	}
 
 	for i := startIdx; i < len(lines); i++ {
-		var status wifire.Status
+		var status gofire.Status
 		if err := json.Unmarshal([]byte(lines[i]), &status); err != nil {
 			// Skip invalid lines but continue processing
 			slog.Warn("skipping invalid JSON line in history file", "line", i+1, "error", err)
